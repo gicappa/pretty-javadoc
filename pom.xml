@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>gk.java</groupId>
+  <artifactId>pretty-javadoc</artifactId>
+  <version>0.1-SNAPSHOT</version>
+
+  <build>
+    <plugins>
+
+       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.20</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.surefire</groupId>
+            <artifactId>surefire-junit47</artifactId>
+            <version>2.20</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <!-- This conf avoid parallel execution on different JVM -->
+          <!-- Useful when spawning servers on junit rules -->
+          <forkCount>1</forkCount>
+          <reuseForks>false</reuseForks>
+          <!-- === -->
+          <useFile>${useFile}</useFile>
+          <excludedGroups>${testcase.excludedGroups}</excludedGroups>
+          <includes>
+            <include>**/*Spec.java</include>
+            <include>**/*Test*.java</include>
+          </includes>
+        </configuration>
+      </plugin>
+
+      <!-- compiler plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+
+      <!-- create an appropriate javadoc -->
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.7</version>
+        <configuration>
+          <javadocDirectory>${main.basedir}/src/javadoc</javadocDirectory>
+          <docfilessubdirs>true</docfilessubdirs>
+          <aggregate>true</aggregate>
+          <show>private</show>
+          <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+          <docletArtifact>
+            <groupId>org.umlgraph</groupId>
+            <artifactId>umlgraph</artifactId>
+            <version>5.6.6</version>
+          </docletArtifact>
+          <additionalparam>
+            -inferrel
+            -attributes
+            -types
+            -visibility
+            -quiet
+            -hide java.*
+            -collpackages java.util.*
+            -qualify
+            -postfixpackage
+            -bgcolor white
+            -edgecolor "#3e3e3e"
+            -edgefontname "Helvetica"
+            -nodefontname "Helvetica"
+            -nodefontabstractname "Helvetica"
+            -nodefontclassabstractname "Helvetica"
+            -nodefontclassname "Helvetica"
+            -nodefontpackagename "Helvetica"
+            -nodefonttagname "Helvetica"
+            -edgefontcolor "#3e3e3e"
+            -nodefontcolor "#3e3e3e"
+            -edgefontsize 9
+            -nodefontclasssize 9
+            -nodefontpackagesize 9
+            -nodefontsize 9
+            -nodefonttagsize 9
+            -nodefillcolor "white"
+            <!-- -collapsible-->
+            <!-- -useimports-->
+            <!-- -apidocmap-->
+          </additionalparam>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.5.2</version>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>log4j-over-slf4j</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+</project>
